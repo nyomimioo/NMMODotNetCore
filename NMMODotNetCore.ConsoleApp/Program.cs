@@ -37,13 +37,13 @@ Console.WriteLine("Hello, World!");
 //// end Ado.Net Read
 ///
 AdoDotNetExample adoDotNetExample = new AdoDotNetExample();
-/*adoDotNetExamplep.Read();*/
+adoDotNetExample.Read();
 /*adoDotNetExample.Create("title", "author", "content");*/
 /*adoDotNetExample.Update(1002, "test title", "test author", "test content");*/
 /*adoDotNetExample.Delete(1003);*/
-adoDotNetExample.Edit(1003);
+/*adoDotNetExample.Edit(1003);
 adoDotNetExample.Edit(1002);
-
+*/
 
 
 
