@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 using System.Reflection.Metadata;
 
 
-namespace NMMODotNetCore.ConsoleApp
+namespace NMMODotNetCore.ConsoleApp.AdoDotNetExamples
 {
     internal class AdoDotNetExample
     {
-        private readonly  SqlConnectionStringBuilder _sqlConnectionStringBuilder=new SqlConnectionStringBuilder(){ 
+        private readonly SqlConnectionStringBuilder _sqlConnectionStringBuilder = new SqlConnectionStringBuilder()
+        {
             DataSource = "DELL\\SQLEXPRESS",
-          InitialCatalog = "DotNetTrainingBath4",
+            InitialCatalog = "DotNetTrainingBath4",
             UserID = "sa",
-           Password = "sa@123"
+            Password = "sa@123"
         };
 
         public void Read()
         {
-           
+
             SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
             Console.WriteLine("Connection is ready");
@@ -32,7 +33,7 @@ namespace NMMODotNetCore.ConsoleApp
             sqlDataAdapter.Fill(dt);
             connection.Close();
             Console.WriteLine("Connection is close");
-            
+
             foreach (DataRow dataRow in dt.Rows)
             {
                 Console.WriteLine("Blog Id=>" + dataRow["BlogID"]);
@@ -43,7 +44,7 @@ namespace NMMODotNetCore.ConsoleApp
             }
 
         }
-            public void Edit(int id)//same read but it read only id 
+        public void Edit(int id)//same read but it read only id 
         {
             SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
@@ -56,7 +57,7 @@ namespace NMMODotNetCore.ConsoleApp
             sqlDataAdapter.Fill(dt);
             connection.Close();
             Console.WriteLine("Connection is close");
-            if(dt.Rows.Count == 0)
+            if (dt.Rows.Count == 0)
             {
 
                 Console.WriteLine("No data found");
@@ -64,18 +65,18 @@ namespace NMMODotNetCore.ConsoleApp
             }
             DataRow dataRow = dt.Rows[0];
 
-           
-            
-                Console.WriteLine("Blog Id=>" + dataRow["BlogID"]);
-                Console.WriteLine("Blog Title=>" + dataRow["BlogTitle"]);
-                Console.WriteLine("Blog Author=>" + dataRow["BlogAuthor"]);
-                Console.WriteLine("Blog Content=>" + dataRow["BlogContent"]);
-                Console.WriteLine("------------------------------------");
-            
+
+
+            Console.WriteLine("Blog Id=>" + dataRow["BlogID"]);
+            Console.WriteLine("Blog Title=>" + dataRow["BlogTitle"]);
+            Console.WriteLine("Blog Author=>" + dataRow["BlogAuthor"]);
+            Console.WriteLine("Blog Content=>" + dataRow["BlogContent"]);
+            Console.WriteLine("------------------------------------");
+
 
 
         }
-        public void Create(string title,string author,string content)
+        public void Create(string title, string author, string content)
         {
             SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
@@ -95,7 +96,7 @@ namespace NMMODotNetCore.ConsoleApp
 
             int result = cmd.ExecuteNonQuery();
             connection.Close();
-            string message=result>0? "Creation is success" : "Creation is fail";
+            string message = result > 0 ? "Creation is success" : "Creation is fail";
             Console.WriteLine(message);
 
         }
@@ -109,7 +110,7 @@ namespace NMMODotNetCore.ConsoleApp
       ,[BlogContent] = @BlogContent
  WHERE BlogId=@BlogId";
             SqlCommand cmd = new SqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@BlogId",id);
+            cmd.Parameters.AddWithValue("@BlogId", id);
             cmd.Parameters.AddWithValue("@BlogTitle", title);
             cmd.Parameters.AddWithValue("@BlogAuthor", author);
             cmd.Parameters.AddWithValue("@BlogContent", content);
@@ -130,7 +131,7 @@ namespace NMMODotNetCore.ConsoleApp
       WHERE BlogId=@BlogId";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogId", id);
-           
+
 
             int result = cmd.ExecuteNonQuery();
             connection.Close();

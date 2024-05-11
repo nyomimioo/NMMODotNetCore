@@ -1,8 +1,10 @@
-﻿using NMMODotNetCore.ConsoleApp;
+﻿using NMMODotNetCore.ConsoleApp.AdoDotNetExamples;
+using NMMODotNetCore.ConsoleApp.EFCoreExamples;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection.Metadata;
 using System.Text;
+
 Console.WriteLine("Hello, World!");
 //SqlConnection
 //npm
@@ -37,13 +39,17 @@ Console.WriteLine("Hello, World!");
 //// end Ado.Net Read
 ///
 AdoDotNetExample adoDotNetExample = new AdoDotNetExample();
-adoDotNetExample.Read();
-/*adoDotNetExample.Create("title", "author", "content");*/
+/*adoDotNetExample.Read(connection);
+*//*adoDotNetExample.Create("title", "author", "content");*/
 /*adoDotNetExample.Update(1002, "test title", "test author", "test content");*/
 /*adoDotNetExample.Delete(1003);*/
 /*adoDotNetExample.Edit(1003);
 adoDotNetExample.Edit(1002);
 */
+//DapperExample dapperExample=new DapperExample();
+//dapperExample.Run();
+EFCoreExample eFCoreExample = new EFCoreExample();
+eFCoreExample.Run();
 
 
 
