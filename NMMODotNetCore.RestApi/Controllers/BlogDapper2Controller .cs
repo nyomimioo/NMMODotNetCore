@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using NMMODotNetCore.RestApi.Models;
+using NMMODotNetCore.Shared;
 using System.Data;
 using System.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -13,15 +14,16 @@ namespace NMMODotNetCore.RestApi.Controllers
    // private BlogModel model = new();
     [Route("api/[controller]")]
     [ApiController]
-    public class BlogDapperController : ControllerBase
+    public class BlogDapper2Controller : ControllerBase
     {
+        private static readonly  DapperService _dapperService = new DapperService(ConnectionString.SqlConnectionStringBuilder.ConnectionString);
+
         [HttpGet]//Read
         public IActionResult GetBlogs()
         {
             string query = "select * from Table_Blog";
-            using IDbConnection db = new SqlConnection(ConnectionString.SqlConnectionStringBuilder.ConnectionString);
-            List<BlogModel> lst = db.Query<BlogModel>(query).ToList();
-            return Ok(lst);
+            var lst2 = _dapperService.Query<BlogModel>(query);
+            return Ok(lst2);
         }
 
         [HttpGet("{id}")]
@@ -40,7 +42,6 @@ namespace NMMODotNetCore.RestApi.Controllers
             return Ok(item);
         }
 
-
         [HttpPost]
         public IActionResult CreateBlogs(BlogModel model)
         {
@@ -52,8 +53,7 @@ namespace NMMODotNetCore.RestApi.Controllers
            (@BlogTitle,
           @BlogAuthor, 
            @BlogContent)";
-            using IDbConnection db = new SqlConnection(ConnectionString.SqlConnectionStringBuilder.ConnectionString);
-            int result = db.Execute(query, model);
+            int result = _dapperService.Execute(query, model);
             string message = result > 0 ? "Creation is success" : "Creation is fail";
             return Ok(message);
         }
@@ -72,8 +72,7 @@ namespace NMMODotNetCore.RestApi.Controllers
       ,[BlogAuthor] = @BlogAuthor
       ,[BlogContent] = @BlogContent
  WHERE BlogId=@BlogId";
-            using IDbConnection db = new SqlConnection(ConnectionString.SqlConnectionStringBuilder.ConnectionString);
-            int result = db.Execute(query, model);
+            int result = _dapperService.Execute(query, model);
             string message = result > 0 ? "Update is successful" : "Update is failed";
             return Ok(message);
         }
@@ -116,11 +115,10 @@ namespace NMMODotNetCore.RestApi.Controllers
    SET {conditions}
  WHERE BlogId = @BlogId";
 
-            using IDbConnection db = new SqlConnection(ConnectionString.SqlConnectionStringBuilder.ConnectionString);
-            int result = db.Execute(query, model);
-
+            int result = _dapperService.Execute(query, model);
             string message = result > 0 ? "Updating Successful." : "Updating Failed.";
             return Ok(message);
+
         }
 
         [HttpDelete("{ id}")]
@@ -133,12 +131,12 @@ namespace NMMODotNetCore.RestApi.Controllers
                 return NotFound("Data is not found");
             }
             string query = @"DELETE from [dbo].[Table_Blog] Where BlogId=@BlogId";
-            using IDbConnection db = new SqlConnection(ConnectionString.SqlConnectionStringBuilder.ConnectionString);
-            int result = db.Execute(query, new BlogModel { BlogId = id });
+            int result = _dapperService.Execute(query);
             string message = result > 0 ? "Delete is successful" : "Delete is failed";
             return Ok(message);
         }
-
+        
+       
         private BlogModel? FindById(int id)
         {
             string query = "select * from Table_Blog where BlogId = @BlogId";
